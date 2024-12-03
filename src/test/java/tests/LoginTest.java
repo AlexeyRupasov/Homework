@@ -1,94 +1,80 @@
 package tests;
 
-
-import org.openqa.selenium.By;
+import io.qameta.allure.*;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import pages.ProductsPage;
-
+import untils.AllureUtils;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-
 public class LoginTest extends BaseTest {
-    @Test
+
+    @Epic("Модуль логина интернет магазина")
+    @Feature("HomeWork")
+    @Story("Final")
+    @Severity(SeverityLevel.BLOCKER)
+    @Owner("Alexey Rupasov")
+    @TmsLink("Homework")
+    @Description("Проверка входа в интеренет-магазин")
+    @Test(description = "Валидная авторизация пользователя")
     public void correctLogin1() {
         loginPage.open();
-        loginPage.login("standard_user", "secret_sauce");
-        assertEquals(productsPage.getTittle(),"Products");
+        loginPage.login(user1, password);
+        assertEquals(productsPage.getTittle(), "Products");
+        AllureUtils.takeScreenshot(driver);
     }
 
-    @Test
+    @Test(description = "Авторизация проблемного пользователя")
     public void correctLogin2() {
         loginPage.open();
-        loginPage.login("problem_user", "secret_sauce");
-        assertTrue(driver.findElement(By.xpath("//*[text()='Products']")).isDisplayed());
-        assertEquals(driver.findElement(By.xpath("//*[@class='title']")).getText(), "Products");
+        loginPage.login(user2, password);
+        assertTrue(productsPage.tittleDisplayed());
+        assertEquals(productsPage.getTittle(), "Products");
     }
 
-    @Test
+    @Test(description = "Авторизация проблемного пользователя 2")
     public void correctLogin3() {
         loginPage.open();
-        loginPage.login("performance_glitch_user", "secret_sauce");
-        assertTrue(driver.findElement(By.xpath("//*[text()='Products']")).isDisplayed());
-        assertEquals(driver.findElement(By.xpath("//*[@class='title']")).getText(), "Products");
+        loginPage.login(user3, password);
+        assertTrue(productsPage.tittleDisplayed());
+        assertEquals(productsPage.getTittle(), "Products");
+        AllureUtils.takeScreenshot(driver);
     }
 
-    @Test
+    @Test(description = "Авторизация при сбое производительности")
     public void correctLogin4() {
         loginPage.open();
-        loginPage.login("visual_user", "secret_sauce");
-        assertTrue(driver.findElement(By.xpath("//*[text()='Products']")).isDisplayed());
-        assertEquals(driver.findElement(By.xpath("//*[@class='title']")).getText(), "Products");
+        loginPage.login(user4, password);
+        assertTrue(productsPage.tittleDisplayed());
+        assertEquals(productsPage.getTittle(), "Products");
+        AllureUtils.takeScreenshot(driver);
     }
 
-    @Test
+    @Test(description = "Авторизация ошибочного пользователя")
     public void correctLogin5() {
         loginPage.open();
-        loginPage.login("error_user", "secret_sauce");
-        assertTrue(driver.findElement(By.xpath("//*[text()='Products']")).isDisplayed());
-        assertEquals(driver.findElement(By.xpath("//*[@class='title']")).getText(), "Products");
+        loginPage.login(user5, password);
+        assertTrue(productsPage.tittleDisplayed());
+        assertEquals(productsPage.getTittle(), "Products");
+        AllureUtils.takeScreenshot(driver);
     }
 
-    @Test
-    public void locked_out_user() {
+    @DataProvider
+    public Object[][] loginData() {
+        return new Object[][]{
+                {"No_user", "secret_sauce", "Epic sadface: Username and password do not match any user in this service"},
+                {"standard_user", "No_password", "Epic sadface: Username and password do not match any user in this service"},
+                {"", "", "Epic sadface: Username is required"},
+                {"standard_user", "", "Epic sadface: Password is required"},
+                {"", "secret_sauce", "Epic sadface: Username is required"},
+                {"locked_out_user", "secret_sauce", "Epic sadface: Sorry, this user has been locked out."}
+        };
+    }
+
+    @Test(dataProvider = "loginData", description = "Авторизация невалидного пользователя")
+    public void incorrectLoginCheck(String user, String password, String errorMessage) {
         loginPage.open();
-        loginPage.login("locked_out_user", "secret_sauce");
-         assertTrue(productsPage.tittleDisplayed1() ,"Epic sadface: Sorry, this user has been locked out.");
-       assertEquals(driver.findElement(By.xpath("//h3")).getText(), "Epic sadface: Sorry, this user has been locked out.");
+        loginPage.login(user, password);
+        assertEquals(loginPage.getErrorMessage(), errorMessage);
+        AllureUtils.takeScreenshot(driver);
     }
-
-    @Test
-    public void incorrectLoginCheck() {
-        loginPage.open();
-        loginPage.login("No_user", "secret_sauce");
-        assertEquals(driver.findElement(By.xpath("//h3")).getText(), "Epic sadface: Username and password do not match any user in this service");
-    }
-
-    @Test
-    public void incorrectPasswordCheck() {
-        loginPage.open();
-        loginPage.login("standard_user", "No_password");
-        assertEquals(driver.findElement(By.xpath("//h3")).getText(), "Epic sadface: Username and password do not match any user in this service");
-    }
-
-    @Test
-    public void NoLoginNoPasswordCheck() {
-        loginPage.open();
-        loginPage.login("", "");
-        assertEquals(driver.findElement(By.xpath("//h3")).getText(), "Epic sadface: Username is required");
-    }
-
-    @Test
-    public void YesLoginNoPasswordCheck() {
-        loginPage.open();
-        loginPage.login("standard_user", "");
-        assertEquals(driver.findElement(By.xpath("//h3")).getText(), "Epic sadface: Password is required");
-    }
-
-    @Test
-    public void NoLoginYesPasswordCheck() {
-        loginPage.open();
-        loginPage.login("", "secret_sauce");
-        assertEquals(driver.findElement(By.xpath("//h3")).getText(), "Epic sadface: Username is required");
-    }
-
 }

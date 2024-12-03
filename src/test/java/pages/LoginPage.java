@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -8,26 +9,42 @@ public class LoginPage extends BasePage {
     private final By USERNAME_INPUT = By.id("user-name");
     private final By PASSWORD_INPUT = By.id("password");
     private final By LOGIN_BUTTON = By.id("login-button");
-    private final By TITTLE2 = By.xpath("//h3 [text()='Epic sadface: Sorry, this user has been locked out.']");
+    private final By ERROR_MESSAGE = By.cssSelector("h3");
+    private final By TITTLE = By.xpath("//h3 [text()='Epic sadface: Sorry, this user has been locked out.']");
 
     public LoginPage(WebDriver driver) {
         super(driver);
     }
 
+    @Step("Открываем браузер")
     public void open() {
         driver.get(BASE_URL);
     }
 
+    @Step("Вводим данные {user} и {password}")
     public void login(String user, String password) {
-
-        driver.findElement(USERNAME_INPUT).sendKeys(user);
-        driver.findElement(PASSWORD_INPUT).sendKeys(password);
-        driver.findElement(LOGIN_BUTTON).submit();
-
+        fillUserInput(user);
+        fillPasswordInput(password);
+        clickSubmitButton();
     }
 
-    public boolean tittleDisplayed1() {
-        driver.findElement(TITTLE2).isDisplayed();
-        return true;
+    @Step("Вводим {user}")
+    public void fillUserInput(String user) {
+        driver.findElement(USERNAME_INPUT).sendKeys(user);
+    }
+
+    @Step("Вводим {password}")
+    public void fillPasswordInput(String password) {
+        driver.findElement(PASSWORD_INPUT).sendKeys(password);
+    }
+
+    @Step("Нажимаем кнопку {Login}")
+    public void clickSubmitButton() {
+        driver.findElement(LOGIN_BUTTON).submit();
+    }
+
+    @Step("Получаем текст из сообщения об ощибке")
+    public String getErrorMessage() {
+        return driver.findElement(ERROR_MESSAGE).getText();
     }
 }
