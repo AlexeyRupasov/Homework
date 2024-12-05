@@ -26,7 +26,6 @@ public class BaseTest {
     String user4;
     String user5;
     String password;
-    String BASE_URL;
 
     @Parameters({"browser"})
     @BeforeMethod
@@ -52,7 +51,6 @@ public class BaseTest {
         user4 = PropertyReader.getProperty("HomeWork.user4");
         user5 = PropertyReader.getProperty("HomeWork.user5");
         password = PropertyReader.getProperty("HomeWork.password");
-        BASE_URL = PropertyReader.getProperty("HomeWork.url");
     }
 
     @AfterMethod

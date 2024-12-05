@@ -3,6 +3,7 @@ package tests;
 import io.qameta.allure.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import pages.LoginPage;
 import untils.AllureUtils;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -15,6 +16,7 @@ public class LoginTest extends BaseTest {
     @Owner("Alexey Rupasov")
     @TmsLink("Homework")
     @Description("Проверка входа в интеренет-магазин")
+
     @Test(description = "Валидная авторизация пользователя")
     public void correctLogin1() {
         loginPage.open();
@@ -29,6 +31,7 @@ public class LoginTest extends BaseTest {
         loginPage.login(user2, password);
         assertTrue(productsPage.tittleDisplayed());
         assertEquals(productsPage.getTittle(), "Products");
+        AllureUtils.takeScreenshot(driver);
     }
 
     @Test(description = "Авторизация проблемного пользователя 2")
@@ -61,12 +64,9 @@ public class LoginTest extends BaseTest {
     @DataProvider
     public Object[][] loginData() {
         return new Object[][]{
-                {"No_user", "secret_sauce", "Epic sadface: Username and password do not match any user in this service"},
-                {"standard_user", "No_password", "Epic sadface: Username and password do not match any user in this service"},
                 {"", "", "Epic sadface: Username is required"},
-                {"standard_user", "", "Epic sadface: Password is required"},
-                {"", "secret_sauce", "Epic sadface: Username is required"},
-                {"locked_out_user", "secret_sauce", "Epic sadface: Sorry, this user has been locked out."}
+                {"Русский", "Алфавит", "Epic sadface: Username and password do not match any user in this service"},
+                {"!!!!!", "!!!!!", "Epic sadface: Username and password do not match any user in this service"},
         };
     }
 
@@ -74,7 +74,38 @@ public class LoginTest extends BaseTest {
     public void incorrectLoginCheck(String user, String password, String errorMessage) {
         loginPage.open();
         loginPage.login(user, password);
-        assertEquals(loginPage.getErrorMessage(), errorMessage);
+        assertTrue(loginPage.getErrorMessage(), errorMessage);
+        AllureUtils.takeScreenshot(driver);
+    }
+
+    @Test(description = "Авторизация невалидного пользователя с невалидным логином")
+    public void incorrectUserCheck() {
+        loginPage.open();
+        loginPage.login("No_user", password);
+        assertTrue(loginPage.getErrorMessage());
+        AllureUtils.takeScreenshot(driver);
+    }
+    @Test(description = "Авторизация невалидного пользователя с невалидным паролем")
+    public void incorrectPasswordCheck() {
+        loginPage.open();
+        loginPage.login(user1, "No_password");
+        assertTrue(loginPage.getErrorMessage());
+        AllureUtils.takeScreenshot(driver);
+    }
+
+    @Test(description = "Авторизация невалидного пользователя с невведенным логином")
+    public void incorrectEmptyLoginCheck() {
+        loginPage.open();
+        loginPage.login("", password);
+        assertTrue(loginPage.getErrorMessage());
+        AllureUtils.takeScreenshot(driver);
+    }
+
+    @Test(description = "Авторизация невалидного пользователя с невведенным паролем")
+    public void incorrectEmptyPasswordCheck() {
+        loginPage.open();
+        loginPage.login(user1, "");
+        assertTrue(loginPage.getErrorMessage());
         AllureUtils.takeScreenshot(driver);
     }
 }

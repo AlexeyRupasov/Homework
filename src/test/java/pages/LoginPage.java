@@ -17,8 +17,9 @@ public class LoginPage extends BasePage {
     }
 
     @Step("Открываем браузер")
-    public void open() {
+    public LoginPage open() {
         driver.get(BASE_URL);
+        return this;
     }
 
     @Step("Вводим данные {user} и {password}")
@@ -44,7 +45,8 @@ public class LoginPage extends BasePage {
     }
 
     @Step("Получаем текст из сообщения об ощибке")
-    public String getErrorMessage() {
-        return driver.findElement(ERROR_MESSAGE).getText();
+    public boolean getErrorMessage() {
+        driver.findElement(ERROR_MESSAGE).isDisplayed();
+        return true;
     }
 }

@@ -21,13 +21,9 @@ public class ProductsPage extends BasePage {
        return driver.findElement(tittle).getText();
     }
 
-    public void addToCart(String product)  {
-        By addToCart = By.xpath(String.format(ADD_TO_CART_PATTERN, product));
-        driver.findElement(addToCart).click();
-    }
-
-    public void addToCart(int index) {
+    public ProductsPage addToCart(int index) {
         driver.findElements(By.xpath("//*[text()='Add to cart']")).get(index).click();
+        return this;
     }
 
     public boolean tittleDisplayed() {
@@ -35,8 +31,9 @@ public class ProductsPage extends BasePage {
         return true;
     }
 
-    public void openCart() {
+    public ProductsPage openCart() {
         driver.findElement(By.xpath("//*[@class='shopping_cart_link']")).click();
+        return this;
     }
 
     public ArrayList<String> getProductsNames() {
@@ -48,7 +45,8 @@ public class ProductsPage extends BasePage {
         return names;
     }
 
-    public void isOpened() {
+    public ProductsPage isOpened() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(tittle));
+        return this;
     }
 }
