@@ -20,23 +20,22 @@ public class BaseTest {
     WebDriver driver;
     LoginPage loginPage;
     ProductsPage productsPage;
-    String user1;
-    String user2;
-    String user3;
-    String user4;
-    String user5;
+    String user;
+    String problemUser;
+    String performanceGlitchUser;
+    String visualUser;
+    String errorUser;
     String password;
 
     @Parameters({"browser"})
+
     @BeforeMethod
     @Description("Открытие браузера")
     public void setup(@Optional("firefox") String browser, ITestContext context) {
         if (browser.equalsIgnoreCase("firefox")) {
-            WebDriverManager.firefoxdriver().setup();
-            FirefoxOptions options = new FirefoxOptions();
-            driver = new FirefoxDriver(options);
+            driver=new FirefoxDriver();
+            driver.manage().window().fullscreen();
         } else if (browser.equalsIgnoreCase("edge")) {
-            WebDriverManager.edgedriver().setup();
             driver = new EdgeDriver();
         }
 
@@ -45,11 +44,11 @@ public class BaseTest {
         loginPage = new LoginPage(driver);
         productsPage = new ProductsPage(driver);
         System.setProperty("BASE_URL", PropertyReader.getProperty("HomeWork.url"));
-        user1 = PropertyReader.getProperty("HomeWork.user1");
-        user2 = PropertyReader.getProperty("HomeWork.user2");
-        user3 = PropertyReader.getProperty("HomeWork.user3");
-        user4 = PropertyReader.getProperty("HomeWork.user4");
-        user5 = PropertyReader.getProperty("HomeWork.user5");
+        user = PropertyReader.getProperty("HomeWork.user1");
+        problemUser = PropertyReader.getProperty("HomeWork.problemUser");
+        performanceGlitchUser = PropertyReader.getProperty("HomeWork.performanceGlitchUser");
+        visualUser = PropertyReader.getProperty("HomeWork.visualUser");
+        errorUser = PropertyReader.getProperty("HomeWork.errorUser");
         password = PropertyReader.getProperty("HomeWork.password");
     }
 

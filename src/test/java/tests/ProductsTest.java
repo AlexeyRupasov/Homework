@@ -9,7 +9,7 @@ public class ProductsTest extends BaseTest {
     public void addGoods() {
         loginPage
                 .open()
-                .login(user1, password);
+                .login(user, password);
         productsPage
                 .isOpened()
                 .addToCart(1)

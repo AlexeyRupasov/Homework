@@ -4,8 +4,10 @@ import io.qameta.allure.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import untils.AllureUtils;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+
 public class LoginTest extends BaseTest {
 
     @Epic("Модуль логина интернет магазина")
@@ -18,16 +20,18 @@ public class LoginTest extends BaseTest {
 
     @Test(description = "Валидная авторизация пользователя")
     public void correctLogin1() {
-        loginPage.open();
-        loginPage.login(user1, password);
+        loginPage
+                .open()
+                .login(user, password);
         assertEquals(productsPage.getTittle(), "Products");
         AllureUtils.takeScreenshot(driver);
     }
 
     @Test(description = "Авторизация проблемного пользователя")
     public void correctLogin2() {
-        loginPage.open();
-        loginPage.login(user2, password);
+        loginPage
+                .open()
+                .login(problemUser, password);
         assertTrue(productsPage.tittleDisplayed());
         assertEquals(productsPage.getTittle(), "Products");
         AllureUtils.takeScreenshot(driver);
@@ -35,8 +39,9 @@ public class LoginTest extends BaseTest {
 
     @Test(description = "Авторизация проблемного пользователя 2")
     public void correctLogin3() {
-        loginPage.open();
-        loginPage.login(user3, password);
+        loginPage
+                .open()
+                .login(performanceGlitchUser, password);
         assertTrue(productsPage.tittleDisplayed());
         assertEquals(productsPage.getTittle(), "Products");
         AllureUtils.takeScreenshot(driver);
@@ -44,8 +49,9 @@ public class LoginTest extends BaseTest {
 
     @Test(description = "Авторизация при сбое производительности")
     public void correctLogin4() {
-        loginPage.open();
-        loginPage.login(user4, password);
+        loginPage
+                .open()
+                .login(visualUser, password);
         assertTrue(productsPage.tittleDisplayed());
         assertEquals(productsPage.getTittle(), "Products");
         AllureUtils.takeScreenshot(driver);
@@ -53,8 +59,9 @@ public class LoginTest extends BaseTest {
 
     @Test(description = "Авторизация ошибочного пользователя")
     public void correctLogin5() {
-        loginPage.open();
-        loginPage.login(user5, password);
+        loginPage
+                .open()
+                .login(errorUser, password);
         assertTrue(productsPage.tittleDisplayed());
         assertEquals(productsPage.getTittle(), "Products");
         AllureUtils.takeScreenshot(driver);
@@ -71,8 +78,9 @@ public class LoginTest extends BaseTest {
 
     @Test(dataProvider = "loginData", description = "Авторизация невалидного пользователя")
     public void incorrectLoginCheck(String user, String password, String errorMessage) {
-        loginPage.open();
-        loginPage.login(user, password);
+        loginPage
+                .open()
+                .login(user, password);
         assertTrue(loginPage.getErrorMessage(), errorMessage);
         AllureUtils.takeScreenshot(driver);
     }
@@ -84,10 +92,11 @@ public class LoginTest extends BaseTest {
         assertTrue(loginPage.getErrorMessage());
         AllureUtils.takeScreenshot(driver);
     }
+
     @Test(description = "Авторизация невалидного пользователя с невалидным паролем")
     public void incorrectPasswordCheck() {
         loginPage.open();
-        loginPage.login(user1, "No_password");
+        loginPage.login(user, "No_password");
         assertTrue(loginPage.getErrorMessage());
         AllureUtils.takeScreenshot(driver);
     }
@@ -103,7 +112,7 @@ public class LoginTest extends BaseTest {
     @Test(description = "Авторизация невалидного пользователя с невведенным паролем")
     public void incorrectEmptyPasswordCheck() {
         loginPage.open();
-        loginPage.login(user1, "");
+        loginPage.login(user, "");
         assertTrue(loginPage.getErrorMessage());
         AllureUtils.takeScreenshot(driver);
     }
