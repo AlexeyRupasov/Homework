@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,15 +13,16 @@ public class ProductsPage extends BasePage {
       super(driver);
     }
 
-    private static final String ADD_TO_CART_PATTERN = "//div[text()='%s']//ancestor::div[@class='inventory_item']//button";
     private final By tittle = By.cssSelector("[class=title]");
+    private final By button = (By.xpath("//*[text()='Add to cart']"));
+    private final By open = (By.xpath("//*[@class='shopping_cart_link']"));
 
     public String getTittle() {
        return driver.findElement(tittle).getText();
     }
 
     public ProductsPage addToCart(int index) {
-        driver.findElements(By.xpath("//*[text()='Add to cart']")).get(index).click();
+        driver.findElements(button).get(index).click();
         return this;
     }
 
@@ -32,7 +32,7 @@ public class ProductsPage extends BasePage {
     }
 
     public ProductsPage openCart() {
-        driver.findElement(By.xpath("//*[@class='shopping_cart_link']")).click();
+        driver.findElement(open).click();
         return this;
     }
 
