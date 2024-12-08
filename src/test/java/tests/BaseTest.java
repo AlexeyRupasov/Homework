@@ -1,11 +1,9 @@
 package tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
 import pages.LoginPage;
@@ -20,7 +18,7 @@ public class BaseTest {
     WebDriver driver;
     LoginPage loginPage;
     ProductsPage productsPage;
-    String user;
+    String standard;
     String problemUser;
     String performanceGlitchUser;
     String visualUser;
@@ -39,12 +37,12 @@ public class BaseTest {
             driver = new EdgeDriver();
         }
 
-        driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         context.setAttribute("driver", driver);
         loginPage = new LoginPage(driver);
         productsPage = new ProductsPage(driver);
         System.setProperty("BASE_URL", PropertyReader.getProperty("HomeWork.url"));
-        user = PropertyReader.getProperty("HomeWork.user1");
+        standard = PropertyReader.getProperty("HomeWork.standard");
         problemUser = PropertyReader.getProperty("HomeWork.problemUser");
         performanceGlitchUser = PropertyReader.getProperty("HomeWork.performanceGlitchUser");
         visualUser = PropertyReader.getProperty("HomeWork.visualUser");
