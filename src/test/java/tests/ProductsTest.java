@@ -1,7 +1,6 @@
 package tests;
 
 import org.testng.annotations.Test;
-
 import static org.testng.Assert.assertTrue;
 
 public class ProductsTest extends BaseTest {
@@ -9,7 +8,7 @@ public class ProductsTest extends BaseTest {
     public void addGoods() {
         loginPage
                 .open()
-                .login(user, password);
+                .login(standard, password);
         productsPage
                 .isOpened()
                 .addToCart(1)

@@ -26,11 +26,6 @@ public class ProductsPage extends BasePage {
         return this;
     }
 
-    public boolean tittleDisplayed() {
-        driver.findElement(tittle).isDisplayed();
-        return true;
-    }
-
     public ProductsPage openCart() {
         driver.findElement(cartLink).click();
         return this;

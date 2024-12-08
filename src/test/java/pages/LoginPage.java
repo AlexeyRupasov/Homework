@@ -44,8 +44,8 @@ public class LoginPage extends BasePage {
     }
 
     @Step("Получаем текст из сообщения об ощибке")
-    public boolean getErrorMessage() {
-        driver.findElement(errorMessage).isDisplayed();
-        return true;
+    public String getErrorMessage() {
+       return driver.findElement(errorMessage).getText();
+
     }
 }
